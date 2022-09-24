@@ -1,5 +1,5 @@
 const  Product = require('../model/product')
-
+const  Errorhandler = require('./utils/errorhandler')
 
 //createProduct - admin
 
@@ -57,11 +57,13 @@ exports.updateProduct = async (req,res,next)=> {
  exports.getProductDetails = async (req,res,next)=>{
      const product = await Product.findById(req.params.id);
      if (!product) {
-         return res.status(500).json({
-             success: false,
-             message: "Product not found"
-
-         })
+         // return res.status(500).json({
+         //     success: false,
+         //     message: "Product not found"
+         //
+         // })
+         //clean code by using Middleware
+         return next( new Errorhandler("Product not found",404))
      }
      res.status(200).json({
          success: true,
